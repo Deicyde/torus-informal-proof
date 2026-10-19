@@ -1,0 +1,211 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!50!black]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Ghat}{\widehat{G}}
+
+\setlist{itemsep=2pt,topsep=4pt}
+
+\title{Compact connected abelian groups with no small subgroups are tori\\[0.6em]
+  \large An informal account of Oliver Nash's \href{https://gist.github.com/ocfnash/19552b9031bff4888300777355b60991}{Lean formalization}}
+\author{Jack McCarthy\thanks{AI (Anthropic's Claude) was used to draft this note and to assist with the writing.}}
+\date{19 October 2026}
+
+\begin{document}
+\maketitle
+
+\section{Statement}
+
+A \emph{character} of a topological group $G$ is a continuous homomorphism $G \to S^1$. Let $\Ghat$ denote the group of characters. $G$ has \emph{no small subgroups} if some neighbourhood $U$ of $1$ contains no subgroup other than $\{1\}$.
+
+\begin{theorem}\label{thm:main}
+A topological group $G$ is isomorphic, as a topological group, to $\T^m = (S^1)^m$ for some $m$ if and only if $G$ is compact, connected and abelian and has no small subgroups.
+\end{theorem}
+
+\paragraph{The easy direction.} Since $\T^m$ is clearly compact, connected and abelian, it suffices to show that it has no small subgroups. Regard $\T^m$ as a subset of $\C^m$, and let $U = \{z \in \T^m : \operatorname{Re} z_j > 0 \text{ for all } j\}$. Let $H \subseteq U$ be a subgroup and $z \in H$, and suppose some coordinate $w = z_j$ is not $1$. Write $w = e^{i\theta}$ with $0 < |\theta| \le \pi$, and let $k$ be least with $k|\theta| \ge \pi/2$. Then $k|\theta| < \pi/2 + |\theta| \le 3\pi/2$, so $\operatorname{Re} w^k \le 0$, contradicting $z^k \in U$. Hence $H = \{1\}$, and $\T^m$ has no small subgroups.
+
+\medskip\noindent For the hard direction, we use the following lemmas.
+
+\begin{lemma}[Characters separate points]\label{lem:sep}
+If $G$ is a compact Hausdorff abelian group and $g \neq 1$, there is a character $\chi$ with $\chi(g) \neq 1$.
+\end{lemma}
+
+\begin{lemma}\label{lem:chars}
+The characters of $\T^m$ are exactly the maps $z \mapsto \prod_{i=1}^m z_i^{n_i}$ with $n_1, \dots, n_m \in \Z$. In particular, the characters of $S^1$ are exactly the maps $z \mapsto z^n$ with $n \in \Z$.
+\end{lemma}
+
+\begin{lemma}\label{lem:t2}
+A topological group $G$ with no small subgroups is Hausdorff.
+\end{lemma}
+
+\section{Proof of the hard direction}\label{sec:thm}
+
+Let $G$ be compact, connected and abelian with no small subgroups, and fix a neighbourhood of $1$ containing no subgroup other than $\{1\}$. Its interior $U$ is an open neighbourhood of $1$ with the same property. By Lemma~\ref{lem:t2}, $G$ is Hausdorff.
+The set $K = G \setminus U$ is compact and misses $1$. By Lemma~\ref{lem:sep}, the open sets $\{\chi \neq 1\}$, $\chi \in \Ghat$, cover $K$, so finitely many $\chi_1, \dots, \chi_k$ do.
+
+If $\chi$ is a character with $\chi^n = 1$, then $\chi$ maps the connected space $G$ into the $n$-th roots of unity, so $\chi = 1$. Thus $\Ghat$ is torsion-free, and the subgroup $M = \langle \chi_1, \dots, \chi_k \rangle$ is free abelian. Let $\psi_1, \dots, \psi_m$ be a basis of $M$, so that $L\colon \Z^m \to M$, $(n_1, \dots, n_m) \mapsto \prod_i \psi_i^{n_i}$, is an isomorphism, and let $\Psi = (\psi_1, \dots, \psi_m)\colon G \to \T^m$. We show that $\Psi$ is an isomorphism.
+
+\uline{$\Psi$ is injective:} By the choice of $\chi_1, \dots, \chi_k$,
+\[
+  K \subseteq \bigcup_{j=1}^k \{\chi_j \neq 1\}
+  \;\implies\; \bigcap_{j=1}^k \ker\chi_j \subseteq G \setminus K = U
+  \;\implies\; \bigcap_{j=1}^k \ker\chi_j = \{1\},
+\]
+since $U$ contains no nontrivial subgroup. Each $\chi_j$ is a product of powers of $\psi_1, \dots, \psi_m$, so $\chi_j(g) = 1$ whenever $\Psi(g) = 1$. Thus $\ker\Psi \subseteq \bigcap_j \ker\chi_j = \{1\}$.
+
+\uline{$\Psi$ is surjective:} The image $H = \Psi(G)$ is compact, hence a closed subgroup of $\T^m$. Suppose, for the sake of contradiction, that $t \notin H$ for some $t \in \T^m$. Since $H$ is closed, $\T^m/H$ is a compact Hausdorff abelian group, and $tH \neq 1$. By Lemma~\ref{lem:sep}, there is a character $\rho$ of $\T^m/H$ with $\rho(tH) \neq 1$, so $\tilde\rho(z) = \rho(zH)$ is a character of $\T^m$ with $\tilde\rho(H) = \{1\}$ and $\tilde\rho(t) \neq 1$. By Lemma~\ref{lem:chars}, $\tilde\rho(z) = \prod_i z_i^{n_i}$ for some $n_i \in \Z$. Then
+\begin{align*}
+  \tilde\rho(\Psi(G)) = \tilde\rho(H) = \{1\}
+  &\implies \textstyle\prod_i \psi_i(g)^{n_i} = 1 \text{ for all } g \in G \\
+  &\implies \textstyle\prod_i \psi_i^{n_i} = 1 \text{ in } M \\
+  &\implies (n_1, \dots, n_m) = L^{-1}\bigl(\textstyle\prod_i \psi_i^{n_i}\bigr) = L^{-1}(1) = 0,
+\end{align*}
+so $\tilde\rho$ is trivial, contradicting $\tilde\rho(t) \neq 1$.
+
+Thus $\Psi$ is a continuous bijection from a compact space to a Hausdorff space, hence a homeomorphism, and $G \cong \T^m$. \qed
+
+\section{Proof of Lemma~\ref{lem:sep}}\label{sec:sep}
+
+\subsection{From Peter--Weyl}
+
+For a continuous unitary representation $\pi\colon G \to \mathrm{U}(\mathcal{H})$ on a finite-dimensional complex Hilbert space $\mathcal{H}$ and vectors $v, w \in \mathcal{H}$, the \emph{matrix coefficient} $\pi_{v,w}\colon G \to \C$ is $\pi_{v,w}(x) = \langle \pi(x)v, w\rangle$. We use the Peter--Weyl theorem in the following form (see e.g.\ Folland, \emph{A Course in Abstract Harmonic Analysis}, \S5.2).
+
+\begin{theorem}[Peter--Weyl]\label{thm:pw}
+If $G$ is a compact Hausdorff group, the linear span of the matrix coefficients of its finite-dimensional continuous unitary representations is dense in $C(G)$ for the uniform norm.
+\end{theorem}
+
+\begin{proof}[Proof of Lemma~\ref{lem:sep}]
+Let $g \neq 1$.
+
+\uline{A representation with $\pi(g) \neq 1$:} Since $G$ is compact Hausdorff, Urysohn's lemma gives $f \in C(G)$ with $f(1) = 1$ and $f(g) = 0$. By Theorem~\ref{thm:pw} there are finite-dimensional continuous unitary representations $\pi_1, \dots, \pi_r$ and vectors $v_j, w_j$ such that $q = \sum_{j=1}^r (\pi_j)_{v_j,w_j}$ satisfies $\|f - q\|_\infty < 1/2$. Since $|f(1) - f(g)| = 1$, this forces $q(1) \neq q(g)$.
+If $\pi_j(g) = 1$ for every $j$, then $(\pi_j)_{v_j,w_j}(g) = \langle v_j, w_j\rangle = (\pi_j)_{v_j,w_j}(1)$ for every $j$, so $q(g) = q(1)$. Hence $\pi_j(g) \neq 1$ for some $j$. Put $\pi = \pi_j\colon G \to \mathrm{U}(\mathcal{H})$.
+
+\uline{A character with $\chi(g) \neq 1$:} Since $G$ is abelian, the operators $\pi(x)$, $x \in G$, are commuting unitary operators on $\mathcal{H}$, so they are simultaneously diagonalisable. That is, $\mathcal{H}$ has an orthonormal basis $e_1, \dots, e_d$ with $\pi(x)e_i = \chi_i(x)e_i$ for all $x$ and $i$. Each $\chi_i$ is multiplicative because $\pi$ is a homomorphism, takes values in $S^1$ because $\pi(x)$ is unitary, and is continuous because $\chi_i(x) = \langle \pi(x)e_i, e_i\rangle$. So each $\chi_i$ is a character, and since $\pi(g) \neq 1$, some $\chi_i(g) \neq 1$.
+\end{proof}
+
+Peter--Weyl rests on the spectral theorem for compact self-adjoint operators. For abelian $G$ the convolution operators of \S\ref{sec:gelfand} commute, so the formalization can use Gelfand theory for commutative C$^*$-algebras instead.
+
+\subsection{The formalized proof, via Gelfand theory}\label{sec:gelfand}
+
+\paragraph{Setup.} Let $G$ be a compact Hausdorff abelian group and $\mu$ the unique regular Haar measure on $G$ with $\mu(G) = 1$. The formalization allows any finite measure that is left- and inversion-invariant, weakly regular and positive on nonempty open sets; the normalisation only simplifies constants. For $f \in C(G)$, $h \in L^2(G, \mu)$ and $a \in G$ put
+\[
+  (f * h)(x) = \int_G f(xy^{-1})\,h(y)\,d\mu(y), \qquad
+  f^\sharp(y) = \overline{f(y^{-1})}, \qquad
+  (\tau_a f)(y) = f(ya^{-1}),
+\]
+and let $C_f$ be the convolution operator $h \mapsto f * h$ on $L^2$. Let $B(L^2)$ denote the C$^*$-algebra of bounded linear operators on $L^2(G, \mu)$, with the operator norm and adjoint. Each $f \in C(G)$ is uniformly continuous, in the sense that for each $\varepsilon > 0$ there is a neighbourhood $V$ of $1$ with $|f(u) - f(v)| < \varepsilon$ whenever $uv^{-1} \in V$.
+
+\begin{lemma}\label{lem:conv}
+Let $f, f' \in C(G)$ and $a, b \in G$.
+\begin{enumerate}[label=(\roman*),ref=(\roman*)]
+  \item\label{conv:bdd} $C_f \in B(L^2)$, and $F \mapsto C_F$ is a bounded linear map $C(G) \to B(L^2)$.
+  \item\label{conv:mult} $f * f' \in C(G)$, and $C_f C_{f'} = C_{f*f'} = C_{f'} C_f$.
+  \item\label{conv:adj} $C_f^* = C_{f^\sharp}$.
+  \item\label{conv:nonzero} $C_f \neq 0$ whenever $f \neq 0$.
+  \item\label{conv:transl} $\tau_a f * \tau_b f' = \tau_{ab}(f * f')$.
+\end{enumerate}
+\end{lemma}
+Let $A_0$ be the unital subalgebra of $B(L^2)$ generated by the $C_f$. By Lemma~\ref{lem:conv}\ref{conv:mult} the $C_f$ commute, so $A_0$ is commutative, and by Lemma~\ref{lem:conv}\ref{conv:adj} it is closed under adjoints. Let $A$ be the closure of $A_0$ in the operator norm. Since multiplication and adjoint are continuous, $A$ is again a commutative unital $*$-subalgebra. Being closed in the complete space $B(L^2)$, it is complete, and it inherits the C$^*$-identity $\|X^*X\| = \|X\|^2$ from $B(L^2)$. So $A$ is a commutative C$^*$-algebra. Let $\Delta$ be the set of nonzero multiplicative linear functionals $\varphi\colon A \to \C$, with the weak-$*$ topology, in which it is a compact Hausdorff space. By the commutative Gelfand--Naimark theorem, the Gelfand transform $A \to C(\Delta)$, $X \mapsto (\varphi \mapsto \varphi(X))$, is isometric, hence injective. So for $X \neq Y$ in $A$ there is $\varphi \in \Delta$ with $\varphi(X) \neq \varphi(Y)$.
+
+\begin{proof}[Proof of Lemma~\ref{lem:sep} via Gelfand theory]
+Let $g \neq 1$. By Urysohn choose a real $f \in C(G)$ with $f(g) = 0$ and $f(1) = 1$, and let $T(a) = C_{\tau_a f} \in A$. Then:
+\begin{itemize}
+  \item \uline{$T$ is continuous:} Given $\varepsilon > 0$, choose $V$ for $f$ by uniform continuity. For $a, b \in G$ we have $(ya^{-1})(yb^{-1})^{-1} = a^{-1}b$, as $G$ is abelian, so $\|\tau_a f - \tau_b f\|_\infty = \sup_y |f(ya^{-1}) - f(yb^{-1})| \le \varepsilon$ whenever $b \in aV$. Thus $a \mapsto \tau_a f$ is continuous from $G$ to $C(G)$ with the sup norm, and composing with the bounded linear map $F \mapsto C_F$ of Lemma~\ref{lem:conv}\ref{conv:bdd} shows that $T$ is continuous.
+  \item \uline{$T(a)T(b) = T(ab)T(1)$:} By Lemma~\ref{lem:conv}\ref{conv:mult} and~\ref{conv:transl}, both sides equal $C_{\tau_{ab}(f*f)}$.
+  \item \uline{$T(g) \neq T(1)$:} We have $T(g) - T(1) = C_{\tau_g f - f}$ and $(\tau_g f - f)(g) = 1$, so this is nonzero by Lemma~\ref{lem:conv}\ref{conv:nonzero}.
+\end{itemize}
+Pick $\varphi \in \Delta$ with $\varphi(T(g)) \neq \varphi(T(1))$ and set $c(a) = \varphi(T(a))$, so that $c(a)c(b) = c(ab)c(1)$. If $c(1) = 0$, then $c(a)^2 = c(a^2)c(1) = 0$ for all $a$, contradicting $c(g) \neq c(1)$. So $\chi = c/c(1)$ is a homomorphism $G \to \C^\times$, and it is continuous because $T$ and $\varphi$ are. Since $G$ is compact, $\chi$ is bounded, say $|\chi| \le R$. For $a \in G$ and $n \in \Z$ this gives $|\chi(a)|^n = |\chi(a^n)| \le R$, which forces $|\chi(a)| = 1$. So $\chi$ takes values in $S^1$, it is a character, and $\chi(g) \neq 1$.
+\end{proof}
+
+\appendix
+\section{Proof of Lemma~\ref{lem:chars}}\label{app:chars}
+
+\begin{proof}
+Each map $z \mapsto \prod_j z_j^{n_j}$ is a continuous homomorphism, hence a character. We prove the converse, first for $m = 1$.
+
+Let $\psi$ be a character of $S^1$. Since $t \mapsto e^{it}$ is a covering map $\R \to S^1$ and $\psi(1) = 1$, the path lifting lemma gives a continuous $F\colon \R \to \R$ with $F(0) = 0$ and $\psi(e^{it}) = e^{iF(t)}$ for all $t$. Because $\psi$ is a homomorphism,
+\[
+  e^{iF(s+t)} = \psi(e^{is}e^{it}) = \psi(e^{is})\,\psi(e^{it}) = e^{i(F(s)+F(t))},
+\]
+so $F(s+t) = F(s) + F(t) + 2\pi k(s,t)$ with $k(s,t) \in \Z$. By continuity $k$ is constant, and setting $s = t = 0$ gives $k = 0$. That is, $F$ is additive. A continuous additive map is linear, so $F(t) = \lambda t$. Taking $t = 2\pi$ gives $e^{2\pi i\lambda} = \psi(1) = 1$, so $\lambda = n \in \Z$. Hence $\psi(e^{it}) = (e^{it})^n$ for all $t$, that is, $\psi(z) = z^n$.
+
+Now let $\psi$ be a character of $\T^m$, and let $\iota_j\colon S^1 \to \T^m$ be the inclusion in the $j$-th coordinate. Each $\psi \circ \iota_j$ is a character of $S^1$, so $\psi(\iota_j(w)) = w^{n_j}$ for some $n_j \in \Z$. Since $z = \iota_1(z_1) \cdots \iota_m(z_m)$ and $\psi$ is a homomorphism,
+\[
+  \psi(z) = \prod_{j=1}^m \psi(\iota_j(z_j)) = \prod_{j=1}^m z_j^{n_j}. \qedhere
+\]
+\end{proof}
+
+\section{Proof of Lemma~\ref{lem:t2}}\label{app:t2}
+
+\begin{proof}
+Let $U$ be a neighbourhood of $1$ containing no subgroup other than $\{1\}$. Let $y$ lie in the closure of $\{1\}$, so that every neighbourhood of $y$ contains~$1$. Since left translation by $y$ is a homeomorphism, $yU^{-1}$ is a neighbourhood of $y$, so $1 \in yU^{-1}$, that is, $y \in U$. Thus the closure of $\{1\}$, which is a subgroup, lies in $U$. Since $U$ contains no subgroup other than $\{1\}$, the closure is trivial, and $\{1\}$ is closed. Now let $x \neq x'$ in $G$. Then $xx'^{-1}$ lies in the open set $G \setminus \{1\}$, so by continuity of $(a,b) \mapsto ab^{-1}$ there are neighbourhoods $V$ of $x$ and $W$ of $x'$ with $ab^{-1} \neq 1$ for all $a \in V$ and $b \in W$. Hence $V \cap W = \emptyset$, so $G$ is Hausdorff.
+\end{proof}
+
+\section{Proof of Lemma~\ref{lem:conv}}\label{app:conv}
+
+We use the notation of \S\ref{sec:gelfand}, and write $\int$ for $\int_G$ and $dy$ for $d\mu(y)$, and similarly for other variables. Let $f, f' \in C(G)$ and $h \in L^2(G, \mu)$.
+
+\begin{proof}
+\begin{enumerate}[label=(F\arabic*),leftmargin=*]
+  \item\label{F:cont} \uline{$f * h$ is continuous:} For $x, x' \in G$, Cauchy--Schwarz and $\mu(G) = 1$ give
+  \[
+    |(f * h)(x) - (f * h)(x')| \le \sup_{y} |f(xy^{-1}) - f(x'y^{-1})|\, \|h\|_2.
+  \]
+  Given $\varepsilon > 0$, choose $V$ for $f$ by uniform continuity. Taking $u = xy^{-1}$ and $v = x'y^{-1}$ in that condition gives $uv^{-1} = xx'^{-1}$, independent of $y$. So whenever $xx'^{-1} \in V$, we get $\sup_y |f(xy^{-1}) - f(x'y^{-1})| \le \varepsilon$, and hence $|(f * h)(x) - (f * h)(x')| \le \varepsilon\|h\|_2$. Since $\{x' : xx'^{-1} \in V\} = V^{-1}x$ is a neighbourhood of $x$ and $\varepsilon$ is arbitrary, $f * h$ is continuous at $x$.
+
+  \item\label{F:bound} \uline{$\|f * h\|_2 \le \|f * h\|_\infty \le \|f\|_\infty\|h\|_2$:} For $x \in G$, Cauchy--Schwarz applied to $y \mapsto f(xy^{-1})$ and $h$, together with invariance of $\mu$, gives $|(f * h)(x)| \le \|f\|_2\|h\|_2$. Since $\mu(G) = 1$, we have $\|\cdot\|_2 \le \|\cdot\|_\infty$ for bounded measurable functions, and applying this to $f * h$ and to $f$ gives
+  \[
+    \|f * h\|_2 \le \|f * h\|_\infty \le \|f\|_2\|h\|_2 \le \|f\|_\infty\|h\|_2.
+  \]
+  In particular $F \mapsto C_F$ is a bounded linear map $C(G) \to B(L^2)$.
+
+  \item\label{F:mult} \uline{$C_f C_{f'} = C_{f*f'}$:} Take $h$ continuous. Then the integrand below is continuous on the compact space $G \times G$, hence a uniform limit of finite sums of products $\alpha(y)\,\beta(z)$ with $\alpha, \beta \in C(G)$ by Stone--Weierstrass, so the two iterated integrals agree. Thus
+  \begin{align*}
+    (f * (f' * h))(x) &= \int f(xy^{-1}) \int f'(yz^{-1})\,h(z)\,dz\,dy \\
+    &= \int \Bigl(\int f(xy^{-1})\,f'(yz^{-1})\,dy\Bigr) h(z)\,dz && \text{(Fubini)} \\
+    &= \int \Bigl(\int f(xz^{-1}u^{-1})\,f'(u)\,du\Bigr) h(z)\,dz && (y = uz) \\
+    &= \int (f * f')(xz^{-1})\,h(z)\,dz = ((f * f') * h)(x),
+  \end{align*}
+  where the substitution $y = uz$ preserves $\mu$ by translation invariance. By \ref{F:bound} both sides are bounded in $h$, and $C(G)$ is dense in $L^2(G, \mu)$ because $\mu$ is regular, so this holds for all $h \in L^2$.
+
+  \item\label{F:comm} \uline{$f * f' = f' * f$:} The map $y \mapsto xy^{-1}$ is an inversion followed by a translation, so it preserves $\mu$, and since $G$ is abelian, $x(xy^{-1})^{-1} = y$. Substituting,
+  \[
+    (f * f')(x) = \int f(xy^{-1})\,f'(y)\,dy = \int f(y)\,f'(xy^{-1})\,dy = (f' * f)(x).
+  \]
+
+  \item\label{F:adj} \uline{$C_f^* = C_{f^\sharp}$:} For continuous $h$ and $k$, Fubini (justified as in \ref{F:mult}) and $\overline{f(xy^{-1})} = f^\sharp(yx^{-1})$ give
+  \[
+    \langle f * h, k \rangle = \int\!\!\int f(xy^{-1})\,h(y)\,\overline{k(x)}\,dy\,dx = \int h(y)\,\overline{\int f^\sharp(yx^{-1})\,k(x)\,dx}\,dy = \langle h, f^\sharp * k \rangle.
+  \]
+  By \ref{F:bound} both sides are continuous in $(h, k)$, so by density this holds for all $h, k \in L^2$.
+
+  \item\label{F:nonzero} \uline{$C_f \neq 0$ whenever $f \neq 0$:} Since $\mu$ gives positive mass to every nonempty open set, a continuous function that vanishes almost everywhere vanishes everywhere. Suppose $C_f = 0$. Then $f * f^\sharp = C_f f^\sharp$ vanishes almost everywhere, and it is continuous by \ref{F:cont}, so it vanishes everywhere. In particular
+  \[
+    0 = (f * f^\sharp)(1) = \int f(y^{-1})\,\overline{f(y^{-1})}\,dy = \int |f(y^{-1})|^2\,dy,
+  \]
+  so the continuous nonnegative function $y \mapsto |f(y^{-1})|^2$ vanishes almost everywhere, hence everywhere, and $f = 0$.
+
+  \item\label{F:transl} \uline{$\tau_a f * \tau_b f' = \tau_{ab}(f * f')$:} Substituting $y = ub$ and using that $G$ is abelian,
+  \[
+    (\tau_a f * \tau_b f')(x) = \int f(xy^{-1}a^{-1})\,f'(yb^{-1})\,dy = \int f\bigl(x(ab)^{-1}u^{-1}\bigr)\,f'(u)\,du = (f * f')\bigl(x(ab)^{-1}\bigr).
+  \]
+\end{enumerate}
+Together these give Lemma~\ref{lem:conv}. Part~\ref{conv:bdd} is \ref{F:bound}, part~\ref{conv:mult} follows from \ref{F:cont}, \ref{F:mult} and \ref{F:comm}, and parts \ref{conv:adj}, \ref{conv:nonzero} and \ref{conv:transl} are \ref{F:adj}, \ref{F:nonzero} and \ref{F:transl}.
+\end{proof}
+
+\end{document}
