@@ -23,14 +23,14 @@
 
 \title{Compact connected abelian groups with no small subgroups are tori\\[0.6em]
   \large An informal account of Oliver Nash's \href{https://gist.github.com/ocfnash/19552b9031bff4888300777355b60991}{Lean formalization}}
-\author{Jack McCarthy\thanks{AI (Anthropic's Claude) was used to draft this note and to assist with the writing.}}
+\author{Jack McCarthy \and Claude Opus 5.5 (Anthropic)}
 \date{19 October 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\noindent We give an informal account of Oliver Nash's Lean formalization of the theorem that a topological group is isomorphic to a torus $\T^m$ if and only if it is compact, connected and abelian and has no small subgroups. Since the characters of a compact Hausdorff abelian group $G$ separate points, finitely many of them separate $1$ from the complement of a neighbourhood containing no nontrivial subgroup, and a basis of the free abelian group they generate gives an isomorphism $G \cong \T^m$. We prove that characters separate points twice: from the Peter--Weyl theorem and, as in the formalization, from Gelfand theory for a commutative C$^*$-algebra of convolution operators on $L^2(G)$.
+\noindent We explain Oliver Nash's Lean proof that a topological group is isomorphic to a torus if and only if it is compact, connected and abelian and has no small subgroups.
 \end{abstract}
 
 \section{Statement}
