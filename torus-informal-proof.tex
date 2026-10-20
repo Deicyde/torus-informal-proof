@@ -9,6 +9,7 @@
 \usepackage{xcolor}
 \usepackage[normalem]{ulem}
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!50!black]{hyperref}
+\usepackage{eso-pic}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -27,6 +28,8 @@
 \date{19 October 2026}
 
 \begin{document}
+% Small link to the source repository (with its commit history), top right of page 1 only.
+\AddToShipoutPictureFG*{\AtPageUpperLeft{\put(\LenToUnit{\paperwidth-1in},\LenToUnit{-0.55in}){\makebox[0pt][r]{\footnotesize\href{https://github.com/Deicyde/torus-informal-proof}{github.com/Deicyde/torus-informal-proof}}}}}
 \maketitle
 
 \begin{abstract}
