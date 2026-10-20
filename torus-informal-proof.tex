@@ -35,7 +35,7 @@
 
 \section{Statement}
 
-A \emph{character} of a topological group $G$ is a continuous homomorphism $G \to S^1$. Let $\Ghat$ denote the group of characters. $G$ has \emph{no small subgroups} if some neighbourhood $U$ of $1$ contains no subgroup other than $\{1\}$.
+A topological group $G$ has \emph{no small subgroups} if some neighbourhood $U$ of $1$ contains no subgroup other than $\{1\}$.
 
 \begin{theorem}\label{thm:main}
 A topological group $G$ is isomorphic, as a topological group, to $\T^m = (S^1)^m$ for some $m$ if and only if $G$ is compact, connected and abelian and has no small subgroups.
@@ -43,7 +43,7 @@ A topological group $G$ is isomorphic, as a topological group, to $\T^m = (S^1)^
 
 \paragraph{The easy direction.} Since $\T^m$ is clearly compact, connected and abelian, it suffices to show that it has no small subgroups. Regard $\T^m$ as a subset of $\C^m$, and let $U = \{z \in \T^m : \operatorname{Re} z_j > 0 \text{ for all } j\}$. Let $H \subseteq U$ be a subgroup and $z \in H$, and suppose some coordinate $w = z_j$ is not $1$. Write $w = e^{i\theta}$ with $0 < |\theta| \le \pi$, and let $k$ be the smallest positive integer with $k|\theta| \ge \pi/2$. Then $(k-1)|\theta| < \pi/2$, so $\pi/2 \le k|\theta| < \pi/2 + |\theta| \le 3\pi/2$ and $\operatorname{Re} w^k = \cos k\theta \le 0$, contradicting $z^k \in U$. Hence $H = \{1\}$, and $\T^m$ has no small subgroups.
 
-\medskip\noindent For the hard direction, we use the following lemmas.
+\medskip\noindent A \emph{character} of a topological group $G$ is a continuous homomorphism $G \to S^1$. Let $\Ghat$ denote the group of characters. For the hard direction, we use the following lemmas.
 
 \begin{lemma}[Characters separate points]\label{lem:sep}
 If $G$ is a compact Hausdorff abelian group and $g \neq 1$, there is a character $\chi$ with $\chi(g) \neq 1$.
