@@ -87,7 +87,7 @@ Thus $\Psi$ is a continuous bijection from a compact space to a Hausdorff space,
 
 \subsection{From Peter--Weyl}
 
-For a continuous unitary representation $\pi\colon G \to \mathrm{U}(\mathcal{H})$ on a finite-dimensional complex Hilbert space $\mathcal{H}$ and vectors $v, w \in \mathcal{H}$, the \emph{matrix coefficient} $\pi_{v,w}\colon G \to \C$ is $\pi_{v,w}(x) = \langle \pi(x)v, w\rangle$. We use the Peter--Weyl theorem in the following form (see e.g.\ Folland, \emph{A Course in Abstract Harmonic Analysis}, \S5.2).
+For a continuous unitary representation $\pi\colon G \to \mathrm{U}(\mathcal{H})$ on a finite-dimensional complex Hilbert space $\mathcal{H}$ and vectors $v, w \in \mathcal{H}$, the \emph{matrix coefficient} $\pi_{v,w}\colon G \to \C$ is $\pi_{v,w}(x) = \langle \pi(x)v, w\rangle$. We use the Peter--Weyl theorem in the following form \cite[Theorem~5.12]{Folland}.
 
 \begin{theorem}[Peter--Weyl]\label{thm:pw}
 If $G$ is a compact Hausdorff group, the linear span of the matrix coefficients of its finite-dimensional continuous unitary representations is dense in $C(G)$ for the uniform norm.
@@ -178,7 +178,7 @@ We use the notation of \S\ref{sec:gelfand}, and write $\int$ for $\int_G$ and $d
   \]
   In particular $F \mapsto C_F$ is a bounded linear map $C(G) \to B(L^2)$.
 
-  \item\label{F:mult} \uline{$C_f C_{f'} = C_{f*f'}$:} Take $h$ continuous. Then the integrand below is continuous on the compact space $G \times G$, hence a uniform limit of finite sums of products $\alpha(y)\,\beta(z)$ with $\alpha, \beta \in C(G)$ by Stone--Weierstrass, so the two iterated integrals agree. Thus
+  \item\label{F:mult} \uline{$C_f C_{f'} = C_{f*f'}$:} By Stone--Weierstrass, every continuous function on $G \times G$ is a uniform limit of finite sums of products $\alpha(y)\,\beta(z)$ with $\alpha, \beta \in C(G)$, and is therefore measurable for the product $\sigma$-algebra. Take $h$ continuous. Then the integrand below is bounded and continuous on $G \times G$, so Fubini applies, and
   \begin{align*}
     (f * (f' * h))(x) &= \int f(xy^{-1}) \int f'(yz^{-1})\,h(z)\,dz\,dy \\
     &= \int \Bigl(\int f(xy^{-1})\,f'(yz^{-1})\,dy\Bigr) h(z)\,dz && \text{(Fubini)} \\
@@ -187,10 +187,11 @@ We use the notation of \S\ref{sec:gelfand}, and write $\int$ for $\int_G$ and $d
   \end{align*}
   where the substitution $y = uz$ preserves $\mu$ by translation invariance. By \ref{F:bound} both sides are bounded in $h$, and $C(G)$ is dense in $L^2(G, \mu)$ because $\mu$ is regular, so this holds for all $h \in L^2$.
 
-  \item\label{F:comm} \uline{$f * f' = f' * f$:} The map $y \mapsto xy^{-1}$ is an inversion followed by a translation, so it preserves $\mu$, and since $G$ is abelian, $x(xy^{-1})^{-1} = y$. Substituting,
-  \[
-    (f * f')(x) = \int f(xy^{-1})\,f'(y)\,dy = \int f(y)\,f'(xy^{-1})\,dy = (f' * f)(x).
-  \]
+  \item\label{F:comm} \uline{$f * f' = f' * f$:} The map $\phi(y) = xy^{-1}$ is an inversion followed by a translation, so it preserves $\mu$, and replacing $y$ by $\phi(y)$ in an integral over $G$ does not change its value. Since $G$ is abelian, $x\,\phi(y)^{-1} = xyx^{-1} = y$. So
+  \begin{align*}
+    (f * f')(x) &= \int f(xy^{-1})\,f'(y)\,dy = \int f\bigl(x\,\phi(y)^{-1}\bigr)\,f'\bigl(\phi(y)\bigr)\,dy \\
+    &= \int f(y)\,f'(xy^{-1})\,dy = (f' * f)(x).
+  \end{align*}
 
   \item\label{F:adj} \uline{$C_f^* = C_{f^\sharp}$:} For continuous $h$ and $k$, Fubini (justified as in \ref{F:mult}) and $\overline{f(xy^{-1})} = f^\sharp(yx^{-1})$ give
   \[
@@ -211,5 +212,9 @@ We use the notation of \S\ref{sec:gelfand}, and write $\int$ for $\int_G$ and $d
 \end{enumerate}
 Together these give Lemma~\ref{lem:conv}. Part~\ref{conv:bdd} is \ref{F:bound}, part~\ref{conv:mult} follows from \ref{F:cont}, \ref{F:mult} and \ref{F:comm}, and parts \ref{conv:adj}, \ref{conv:nonzero} and \ref{conv:transl} are \ref{F:adj}, \ref{F:nonzero} and \ref{F:transl}.
 \end{proof}
+
+\begin{thebibliography}{1}
+\bibitem{Folland} G.~B. Folland, \emph{A Course in Abstract Harmonic Analysis}, 2nd ed., Textbooks in Mathematics, CRC Press, Boca Raton, FL, 2016.
+\end{thebibliography}
 
 \end{document}
